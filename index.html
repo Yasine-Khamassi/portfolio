@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yasine Khamassi | Cybersecurity</title>
+<meta name="description" content="Cyber Security graduate in Dubai. Open to SOC Analyst (L1), Security Analyst and IT Support roles. Access control, API & webhook security, AI/LLM security, fraud prevention and monitoring.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Yasine Khamassi | Cybersecurity">
+<meta property="og:description" content="SOC Analyst (L1) · IT Support · AI/LLM Security. I build and attack real systems, then prove the controls hold.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yasine-khamassi.vercel.app/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#050816;
+    --bg-2:#0a0f24;
+    --panel:#0c1330;
+    --panel-2:#111a3d;
+    --line:rgba(255,255,255,.08);
+    --line-2:rgba(255,255,255,.14);
+    --text:#f3f3f3;
+    --muted:#99a2b5;
+    --muted-2:#6b7488;
+    --accent:#2dd4bf;
+    --accent-2:#5eead4;
+    --accent-ink:#031612;
+    --glow:rgba(45,212,191,.16);
+    --maxw:1120px;
+    --sans:"Poppins",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+    --nav-h:68px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 10px)}
+  body{
+    background:var(--bg);color:var(--text);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+    padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  ::selection{background:var(--accent);color:var(--accent-ink)}
+
+  /* background layers */
+  #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
+  .bg-glow{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .bg-glow::before,.bg-glow::after{content:"";position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+  .bg-glow::before{width:520px;height:520px;right:-120px;top:4%;background:radial-gradient(circle,var(--glow),transparent 70%)}
+  .bg-glow::after{width:460px;height:460px;left:-160px;bottom:0;background:radial-gradient(circle,rgba(56,189,248,.10),transparent 70%)}
+
+  .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+
+  /* nav */
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:50;height:var(--nav-h);
+    display:flex;align-items:center;
+    background:rgba(5,8,22,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+  header.nav.scrolled{border-bottom-color:var(--line);background:rgba(5,8,22,.85)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.2px}
+  .badge{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+    border:1.5px solid var(--accent);color:var(--accent);font-family:var(--mono);font-weight:700;font-size:15px;
+    background:linear-gradient(180deg,rgba(45,212,191,.12),rgba(45,212,191,.02));box-shadow:0 0 18px -6px var(--accent)}
+  .navlinks{display:flex;align-items:center;gap:28px}
+  .navlinks a{color:var(--muted);font-size:14.5px;font-weight:500;position:relative;padding:4px 0;transition:color .2s}
+  .navlinks a:hover,.navlinks a.active{color:var(--text)}
+  .navlinks a::after{content:"";position:absolute;left:0;right:100%;bottom:-3px;height:2px;background:var(--accent);transition:right .25s;border-radius:2px}
+  .navlinks a:hover::after,.navlinks a.active::after{right:0}
+  .navcta{border:1px solid var(--line-2);padding:8px 16px;border-radius:9px;color:var(--text)!important;font-weight:600;font-size:14px;transition:.2s}
+  .navcta:hover{border-color:var(--accent);color:var(--accent)!important;box-shadow:0 0 18px -8px var(--accent)}
+  .navcta::after{display:none}
+  .burger{display:none;background:none;border:1px solid var(--line-2);border-radius:9px;width:42px;height:38px;cursor:pointer;color:var(--text)}
+  .burger span{display:block;width:18px;height:2px;background:currentColor;margin:3px auto;border-radius:2px;transition:.25s}
+
+  /* sections */
+  section{padding:92px 0;position:relative}
+  .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);
+    display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .kicker::before{content:"";width:26px;height:1px;background:var(--accent);display:inline-block}
+  h2.title{font-size:clamp(30px,5vw,46px);font-weight:700;letter-spacing:-.02em;line-height:1.05;margin-bottom:10px}
+  .section-lead{color:var(--muted);max-width:60ch;font-size:16.5px;margin-bottom:40px}
+
+  /* hero */
+  #top{min-height:100vh;display:flex;align-items:center;padding-top:calc(var(--nav-h) + 40px);padding-bottom:70px}
+  .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;width:100%}
+  .hero-left{display:flex;gap:22px}
+  .rail{flex:0 0 auto;width:14px;display:flex;flex-direction:column;align-items:center;padding-top:18px}
+  .rail .dot{width:13px;height:13px;border-radius:50%;background:var(--accent);box-shadow:0 0 16px var(--accent)}
+  .rail .ln{width:2px;flex:1;background:linear-gradient(var(--accent),transparent);margin-top:6px;min-height:120px}
+  .hero h1{font-size:clamp(44px,8vw,86px);font-weight:800;line-height:.98;letter-spacing:-.03em}
+  .hero h1 .tl{color:var(--accent)}
+  .hero .sub{font-size:clamp(17px,2.4vw,22px);color:#d7dbe6;max-width:40ch;margin-top:22px;font-weight:400}
+  .term{font-family:var(--mono);color:var(--accent);margin-top:22px;font-size:15px}
+  .term .cur{display:inline-block;width:9px;height:17px;background:var(--accent);vertical-align:-3px;margin-left:2px;animation:blink 1.1s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+  .chip{font-size:13.5px;font-weight:500;padding:7px 14px;border-radius:999px;border:1px solid var(--line-2);
+    background:rgba(255,255,255,.02);color:#cfd5e2}
+  .loc{margin-top:22px;color:var(--muted);font-size:14px;font-family:var(--mono)}
+  .orb-wrap{display:grid;place-items:center}
+  .orb{width:min(330px,74vw);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;
+    border:1px solid var(--line-2);
+    background:radial-gradient(circle at 50% 42%,rgba(45,212,191,.16),rgba(10,15,36,.2) 60%,transparent 72%)}
+  .orb::before{content:"";position:absolute;inset:-2px;border-radius:50%;
+    box-shadow:0 0 70px -10px var(--glow),inset 0 0 60px -20px var(--glow)}
+  .orb span{font-family:var(--mono);font-weight:700;font-size:clamp(46px,9vw,74px);color:var(--accent);letter-spacing:2px;text-shadow:0 0 30px var(--glow)}
+  .scrolldown{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);color:var(--muted-2);display:grid;justify-items:center;gap:8px;font-size:11px;font-family:var(--mono);letter-spacing:.2em}
+  .mouse{width:22px;height:34px;border:1.5px solid var(--line-2);border-radius:12px;position:relative}
+  .mouse::after{content:"";position:absolute;left:50%;top:7px;transform:translateX(-50%);width:4px;height:7px;border-radius:2px;background:var(--accent);animation:wheel 1.5s infinite}
+  @keyframes wheel{0%{opacity:0;top:7px}40%{opacity:1}80%{opacity:0;top:16px}}
+
+  /* about */
+  .about-grid{display:grid;grid-template-columns:1fr;gap:20px;max-width:none}
+  .lead-para{font-size:17px;color:#d7dbe6;max-width:72ch}
+  .lead-para + .lead-para{margin-top:16px}
+  .lead-para b{color:#fff;font-weight:600}
+  .quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:34px}
+  .quick .q{border:1px solid var(--line);border-radius:14px;padding:18px 18px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent)}
+  .quick .q .n{font-size:26px;font-weight:700;color:var(--accent);font-family:var(--mono)}
+  .quick .q .l{font-size:13px;color:var(--muted);margin-top:4px}
+
+  /* experience */
+  .xp{display:grid;gap:18px}
+  .xp-card{border:1px solid var(--line);border-radius:16px;padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent);transition:.25s}
+  .xp-card:hover{border-color:var(--line-2);transform:translateY(-2px)}
+  .xp-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:baseline}
+  .xp-role{font-size:20px;font-weight:600}
+  .xp-when{font-family:var(--mono);font-size:13px;color:var(--accent)}
+  .xp-org{color:var(--muted);font-size:14.5px;margin-top:3px}
+  .xp-card ul{margin-top:16px;padding-left:0;list-style:none;display:grid;gap:9px}
+  .xp-card li{position:relative;padding-left:22px;color:#cfd5e2;font-size:15px}
+  .xp-card li::before{content:"";position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:50%;border:1.5px solid var(--accent)}
+
+  /* skills */
+  .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px}
+  .skill-group{border:1px solid var(--line);border-radius:16px;padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent)}
+  .skill-group h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-family:var(--mono);margin-bottom:14px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-size:13px;padding:6px 11px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--line);color:#cfd5e2}
+
+  /* projects */
+  .group-label{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);
+    margin:40px 0 18px;display:flex;align-items:center;gap:12px}
+  .group-label:first-of-type{margin-top:0}
+  .group-label span.ln{height:1px;flex:1;background:var(--line)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .card{border:1px solid var(--line);border-radius:16px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.028),transparent);
+    display:flex;flex-direction:column;gap:12px;transition:.25s;position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),transparent);transition:width .3s}
+  .card:hover{border-color:var(--line-2);transform:translateY(-3px);box-shadow:0 20px 50px -30px rgba(45,212,191,.5)}
+  .card:hover::before{width:100%}
+  .card .c-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+  .card h4{font-size:18px;font-weight:600;line-height:1.3}
+  .result{flex:0 0 auto;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent);
+    border:1px solid rgba(45,212,191,.4);background:rgba(45,212,191,.08);padding:4px 9px;border-radius:999px;white-space:nowrap}
+  .card p{color:#c3cad8;font-size:14.5px;flex:1}
+  .card .ht{display:flex;flex-wrap:wrap;gap:7px}
+  .card .ht span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .card .repo{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;color:var(--accent);margin-top:2px;width:max-content}
+  .card .repo svg{width:16px;height:16px;fill:currentColor}
+  .card .repo:hover{text-decoration:underline}
+
+  /* contact */
+  #contact{padding-bottom:70px}
+  .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:start}
+  .c-methods{display:grid;gap:12px}
+  .c-row{display:flex;align-items:center;gap:16px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent);transition:.2s}
+  .c-row:hover{border-color:var(--accent);transform:translateX(3px)}
+  .c-ico{width:40px;height:40px;flex:0 0 auto;border-radius:10px;display:grid;place-items:center;border:1px solid var(--line-2);color:var(--accent)}
+  .c-ico svg{width:19px;height:19px;fill:currentColor}
+  .c-row .l{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-family:var(--mono)}
+  .c-row .v{font-size:15.5px;color:var(--text);word-break:break-word}
+  .c-side{border:1px solid var(--line);border-radius:16px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent)}
+  .c-side h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-family:var(--mono);margin-bottom:14px}
+  .c-side .row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:14.5px}
+  .c-side .row:first-of-type{border-top:none}
+  .c-side .row .k{color:var(--muted)}
+  .avail{display:inline-flex;align-items:center;gap:8px;margin-top:4px;color:var(--accent);font-size:13px;font-family:var(--mono)}
+  .avail .pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.6)}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--muted-2);font-size:13.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+  footer .mono{font-family:var(--mono)}
+
+  /* responsive */
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;gap:34px}
+    .orb-wrap{order:-1}
+    .orb{width:200px}
+    .contact-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:680px){
+    .navlinks{position:fixed;top:var(--nav-h);left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
+      background:rgba(7,11,30,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
+      padding:10px max(20px,env(safe-area-inset-left));transform:translateY(-130%);transition:transform .28s;z-index:40}
+    .navlinks.open{transform:translateY(0)}
+    .navlinks a{padding:13px 2px;border-bottom:1px solid var(--line)}
+    .navlinks a::after{display:none}
+    .navlinks .navcta{border:none;padding:13px 2px}
+    .burger{display:block}
+    section{padding:72px 0}
+    #top{min-height:auto}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Yasine Khamassi home">
+      <span class="badge">YK</span>
+      <span>Yasine Khamassi</span>
+    </a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a class="navcta" href="#contact">Contact</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section id="top">
+    <div class="wrap hero">
+      <div class="hero-left">
+        <div class="rail"><span class="dot"></span><span class="ln"></span></div>
+        <div>
+          <h1>Hi, I'm <span class="tl">Yasine</span></h1>
+          <p class="sub">Cyber Security graduate in Dubai, open to SOC Analyst (L1), Security Analyst and IT Support roles.</p>
+          <div class="term">&gt; secure. monitor. respond.<span class="cur"></span></div>
+          <div class="chips">
+            <span class="chip">SOC Analyst (L1)</span>
+            <span class="chip">IT Support</span>
+            <span class="chip">AI / LLM Security</span>
+          </div>
+          <div class="loc">Dubai, UAE</div>
+        </div>
+      </div>
+      <div class="orb-wrap">
+        <div class="orb"><span>YK</span></div>
+      </div>
+    </div>
+    <a class="scrolldown" href="#about" aria-label="Scroll to about">
+      <span class="mouse"></span>
+      SCROLL
+    </a>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <div class="kicker">Introduction</div>
+      <h2 class="title">Overview.</h2>
+      <div class="about-grid">
+        <div>
+          <p class="lead-para">Cyber Security graduate in Dubai, looking for a junior <b>SOC Analyst (L1)</b>, <b>Security Analyst</b> or <b>IT Support</b> role.</p>
+          <p class="lead-para">Since 2023 I've built and secured the full tech stack behind two digital-goods e-commerce brands, including an order delivery portal that has processed <b>800+ orders</b>. Real customers, real payments. When something breaks or gets abused, I'm the one who has to catch it.</p>
+          <p class="lead-para">Alongside that, I build and <b>attack</b> AI systems: five published AI-security projects covering LLM red-teaming, secure RAG, an AI agent security gateway, threat detection and risk governance — mapped to OWASP LLM Top 10, NIST AI RMF and MITRE ATLAS. Everything runs locally against a model I control, with only planted fake secrets.</p>
+          <p class="lead-para">I use AI coding tools like Claude and Lovable to ship faster. The security calls are mine: what gets trusted, what gets verified, what fails closed.</p>
+        </div>
+        <div class="quick">
+          <div class="q"><div class="n">800+</div><div class="l">orders processed on a system I secured</div></div>
+          <div class="q"><div class="n">30+</div><div class="l">serverless functions under RLS + JWT</div></div>
+          <div class="q"><div class="n">5</div><div class="l">published AI-security projects</div></div>
+          <div class="q"><div class="n">1 yr+</div><div class="l">on-site payments &amp; IT support</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="wrap">
+      <div class="kicker">Where I've worked</div>
+      <h2 class="title">Experience.</h2>
+      <div class="xp">
+        <div class="xp-card">
+          <div class="xp-head">
+            <div>
+              <div class="xp-role">Founder &amp; Technical Lead — Application Security &amp; Monitoring</div>
+              <div class="xp-org">Self-employed · Dubai</div>
+            </div>
+            <div class="xp-when">Feb 2023 — Present</div>
+          </div>
+          <ul>
+            <li>Built and secured the full stack behind two digital-goods e-commerce brands, end to end.</li>
+            <li>Architected a serverless order-delivery platform (Cloudflare Workers, D1, R2) that has processed 800+ orders, with its own fraud controls.</li>
+            <li>Enforced least privilege with PostgreSQL Row-Level Security and JWT validation across 30+ serverless functions.</li>
+            <li>Hardened payment &amp; webhook endpoints: HMAC-SHA256 with constant-time comparison, fail-closed handling, per-IP rate limiting, input validation and HSTS.</li>
+            <li>Ran the monitoring: heartbeat watchdogs, real-time alerts, and GitHub Actions health checks that open an issue on every failure.</li>
+          </ul>
+        </div>
+        <div class="xp-card">
+          <div class="xp-head">
+            <div>
+              <div class="xp-role">Payments &amp; IT Operations Associate</div>
+              <div class="xp-org">PayRow · Dubai · On-site</div>
+            </div>
+            <div class="xp-when">Aug 2025 — Sep 2026</div>
+          </div>
+          <ul>
+            <li>Set up, configured and ran POS card terminals for card-present payments at live vendor events.</li>
+            <li>Diagnosed and fixed terminal and payment issues on site, under time pressure, to restore card acceptance.</li>
+            <li>Was the on-site technical point of contact for vendors' card-payment hardware.</li>
+            <li>Good practice for SOC work: find the fault fast, fix it, and explain it clearly to someone who isn't technical.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="kicker">What I work with</div>
+      <h2 class="title">Skills.</h2>
+      <div class="skills">
+        <div class="skill-group">
+          <h3>Security</h3>
+          <div class="tags">
+            <span class="tag">Access control</span><span class="tag">RBAC</span><span class="tag">IAM</span>
+            <span class="tag">OAuth</span><span class="tag">JWT</span><span class="tag">PostgreSQL RLS</span>
+            <span class="tag">API &amp; webhook security</span><span class="tag">HMAC verification</span>
+            <span class="tag">Rate limiting</span><span class="tag">Security headers</span><span class="tag">Input validation</span>
+            <span class="tag">Fraud prevention</span><span class="tag">Secrets management</span>
+            <span class="tag">Monitoring &amp; alerting</span><span class="tag">Change control</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>AI / LLM Security</h3>
+          <div class="tags">
+            <span class="tag">Prompt-injection testing</span><span class="tag">OWASP LLM Top 10</span>
+            <span class="tag">NIST AI RMF</span><span class="tag">MITRE ATLAS</span><span class="tag">Secure RAG</span>
+            <span class="tag">Agent tool allow-listing</span><span class="tag">Output DLP</span><span class="tag">Detection rules</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Development</h3>
+          <div class="tags">
+            <span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">SQL</span>
+            <span class="tag">Node.js</span><span class="tag">Next.js</span><span class="tag">React</span>
+            <span class="tag">PostgreSQL</span><span class="tag">REST APIs</span><span class="tag">WebSockets</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Cloud &amp; tools</h3>
+          <div class="tags">
+            <span class="tag">Cloudflare Workers / D1 / R2</span><span class="tag">Supabase</span><span class="tag">Vercel</span>
+            <span class="tag">Shopify</span><span class="tag">Stripe</span><span class="tag">Git</span>
+            <span class="tag">GitHub Actions</span><span class="tag">CI/CD</span><span class="tag">Ollama</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>IT</h3>
+          <div class="tags">
+            <span class="tag">POS systems</span><span class="tag">Troubleshooting</span><span class="tag">IT operations</span><span class="tag">Endpoint support</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h3>Languages</h3>
+          <div class="tags">
+            <span class="tag">Arabic — native</span><span class="tag">English — full professional</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <div class="kicker">Systems I have secured</div>
+      <h2 class="title">Projects.</h2>
+      <p class="section-lead">Two sides of the same job: an AI-security lab where I attack models and prove the controls hold, and the production stack behind two live e-commerce brands.</p>
+
+      <div class="group-label">AI Security Lab — attack, defend, verify <span class="ln"></span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="c-top"><h4>LLM Red-Team Lab</h4><span class="result">1/10 → 0/10</span></div>
+          <p>Attack a live local chatbot with prompt-injection probes, score secret and system-prompt leaks by ground truth, then retest with guardrails until it holds.</p>
+          <div class="ht"><span>#OWASP LLM07</span><span>#Garak</span><span>#Ollama</span></div>
+          <a class="repo" href="https://github.com/Yasine-Khamassi/llm-red-team-lab" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>View on GitHub</a>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>Secure RAG Pipeline</h4><span class="result">4/4 → 1/4</span></div>
+          <p>Role-aware retrieval attacked for cross-role leakage and indirect prompt injection, then locked down with entitlement filtering, instruction/data separation and output DLP.</p>
+          <div class="ht"><span>#OWASP LLM01</span><span>#RAG</span><span>#DLP</span></div>
+          <a class="repo" href="https://github.com/Yasine-Khamassi/secure-rag-pipeline" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>View on GitHub</a>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>AI Agent Security Gateway</h4><span class="result">2/2 → 0/2</span></div>
+          <p>A tool-using agent that, when hijacked, still tries the forbidden action — and is denied outside the model by a gateway that allow-lists tools per task.</p>
+          <div class="ht"><span>#OWASP LLM01/06</span><span>#MITRE ATLAS</span></div>
+          <a class="repo" href="https://github.com/Yasine-Khamassi/ai-agent-security-gateway" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>View on GitHub</a>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>LLM Threat Detection</h4><span class="result">5/5 · 0 FP</span></div>
+          <p>Detection rules over AI-security telemetry that catch prompt injection, data exfiltration and tool abuse — with an incident playbook — scored on labelled sessions.</p>
+          <div class="ht"><span>#Detection</span><span>#Blue team</span><span>#Telemetry</span></div>
+          <a class="repo" href="https://github.com/Yasine-Khamassi/llm-threat-detection" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>View on GitHub</a>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>AI Risk Governance</h4><span class="result">finding → evidence</span></div>
+          <p>Inventory, risk register, control mapping and an evidence trail — each finding traced through to a control and proof — built against NIST AI RMF, OWASP and MITRE ATLAS.</p>
+          <div class="ht"><span>#NIST AI RMF</span><span>#GRC</span><span>#Traceability</span></div>
+          <a class="repo" href="https://github.com/Yasine-Khamassi/ai-risk-governance" target="_blank" rel="noopener"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>View on GitHub</a>
+        </div>
+      </div>
+
+      <div class="group-label">Production systems I've secured <span class="ln"></span></div>
+      <div class="cards">
+        <div class="card">
+          <div class="c-top"><h4>Secure Order Delivery Portal</h4></div>
+          <p>Order-delivery system on Cloudflare Workers, D1 and R2 that has processed 800+ orders. Customers verify their account before anything is delivered, and a bot fulfils one product line in under 2 minutes. Built to fail safely: token-authenticated WebSockets, idempotent processing so no order runs twice, crash recovery, and an automatic refund if an order isn't delivered within 2 days.</p>
+          <div class="ht"><span>#Cloudflare Workers</span><span>#D1</span><span>#R2</span><span>#WebSockets</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>Role-Based Access Control &amp; OAuth Login</h4></div>
+          <p>Owner, admin and user roles enforced at the database layer with PostgreSQL Row-Level Security, plus JWT checks across 30+ serverless functions, so each user only reaches the data their role allows. Passwordless login via Google and Discord OAuth.</p>
+          <div class="ht"><span>#PostgreSQL RLS</span><span>#JWT</span><span>#OAuth</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>Payment &amp; Webhook Security</h4></div>
+          <p>Serverless functions that handle orders and payments. Incoming webhooks are verified with HMAC-SHA256 signatures using constant-time comparison to block timing attacks. Endpoints fail closed: a bad or missing signature is rejected, never waved through. Per-IP rate limiting, input validation and security headers including HSTS. Payments run through Stripe.</p>
+          <div class="ht"><span>#HMAC-SHA256</span><span>#HSTS</span><span>#Rate limiting</span><span>#Stripe</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>Monitoring &amp; Alerting</h4></div>
+          <p>Monitoring for my production systems, so I hear about failures from an alert, not a customer. Heartbeat watchdogs check that critical services are alive, real-time alerts fire when they aren't, and scheduled GitHub Actions open an issue automatically when a check fails — so every failure leaves a record to follow up on.</p>
+          <div class="ht"><span>#Watchdogs</span><span>#Alerting</span><span>#GitHub Actions</span></div>
+        </div>
+        <div class="card">
+          <div class="c-top"><h4>Change-Controlled AI SEO Agent</h4></div>
+          <p>An autonomous AI agent that works on the stores' SEO under strict change control. It can only ship changes as GitHub pull requests, then verifies the deploy and checks the live site. It is never allowed to touch the design. Every change is reviewable and reversible — how I think any automation in production should work.</p>
+          <div class="ht"><span>#Pull requests</span><span>#Change control</span><span>#CI/CD</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="kicker">Get in touch</div>
+      <h2 class="title">Contact.</h2>
+      <p class="section-lead">Open to SOC Analyst (L1), Security Analyst and IT Support roles across the UAE. Available immediately, with my own UAE residence visa.</p>
+      <div class="contact-grid">
+        <div class="c-methods">
+          <a class="c-row" href="mailto:yasinekhamassi0@gmail.com">
+            <span class="c-ico"><svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5Z"/></svg></span>
+            <span><span class="l">Email</span><br><span class="v">yasinekhamassi0@gmail.com</span></span>
+          </a>
+          <a class="c-row" href="tel:+971582993822">
+            <span class="c-ico"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.3.2 2.5.57 3.6a1 1 0 0 1-.25 1Z"/></svg></span>
+            <span><span class="l">Phone</span><br><span class="v">+971 58 299 3822</span></span>
+          </a>
+          <a class="c-row" href="https://www.linkedin.com/in/yasine-khamassi-8662a43a2/" target="_blank" rel="noopener">
+            <span class="c-ico"><svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14ZM8.3 18.3v-7H6v7h2.3ZM7.1 10a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm11.2 8.3v-3.9c0-2.1-1.1-3.1-2.6-3.1-1.2 0-1.7.66-2 1.1v-.95H11.3c.03.65 0 7 0 7h2.3v-3.9c0-.21.02-.42.08-.57.17-.42.55-.85 1.2-.85.84 0 1.18.64 1.18 1.58v3.74h2.3Z"/></svg></span>
+            <span><span class="l">LinkedIn</span><br><span class="v">linkedin.com/in/yasine-khamassi</span></span>
+          </a>
+          <a class="c-row" href="https://github.com/Yasine-Khamassi" target="_blank" rel="noopener">
+            <span class="c-ico"><svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg></span>
+            <span><span class="l">GitHub</span><br><span class="v">github.com/Yasine-Khamassi</span></span>
+          </a>
+        </div>
+        <div class="c-side">
+          <h3>At a glance</h3>
+          <div class="row"><span class="k">Open to</span><span>SOC Analyst (L1)</span></div>
+          <div class="row"><span class="k"></span><span>Security Analyst</span></div>
+          <div class="row"><span class="k"></span><span>IT Support</span></div>
+          <div class="row"><span class="k">Location</span><span>Dubai, UAE</span></div>
+          <div class="row"><span class="k">Languages</span><span>Arabic · English</span></div>
+          <div class="avail"><span class="pulse"></span>Available immediately · UAE visa</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Yasine Khamassi</span>
+    <span class="mono">secure. monitor. respond.</span>
+  </div>
+</footer>
+
+<script>
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // nav scrolled state + mobile toggle
+  const nav = document.getElementById('nav');
+  const links = document.getElementById('navlinks');
+  const burger = document.getElementById('burger');
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 10);
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+  burger.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+  // scroll-spy active link
+  const spy = [...document.querySelectorAll('main section[id]')];
+  const navMap = {};
+  links.querySelectorAll('a').forEach(a => navMap[a.getAttribute('href').slice(1)] = a);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+        const id = e.target.id === 'top' ? 'about' : e.target.id;
+        if (navMap[id]) navMap[id].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  spy.forEach(s => io.observe(s));
+
+  // lightweight starfield
+  const cv = document.getElementById('stars');
+  const ctx = cv.getContext('2d');
+  let w, h, stars, dpr;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function init(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = cv.width = innerWidth * dpr; h = cv.height = innerHeight * dpr;
+    cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+    const count = Math.min(140, Math.round(innerWidth*innerHeight/14000));
+    stars = Array.from({length:count}, () => ({
+      x:Math.random()*w, y:Math.random()*h, r:(Math.random()*1.2+0.3)*dpr,
+      a:Math.random()*0.6+0.2, tw:Math.random()*0.02+0.004, dir:Math.random()<.5?1:-1
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      if(!reduce){ s.a += s.tw*s.dir; if(s.a>0.85||s.a<0.15) s.dir*=-1; }
+      ctx.globalAlpha = s.a;
+      ctx.fillStyle = Math.random()<0.5 ? '#2dd4bf' : '#ffffff';
+      ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.3); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if(!reduce) requestAnimationFrame(draw);
+  }
+  init(); draw();
+  let rt; addEventListener('resize', () => { clearTimeout(rt); rt=setTimeout(()=>{init(); if(reduce) draw();}, 200); });
+</script>
+</body>
+</html>
