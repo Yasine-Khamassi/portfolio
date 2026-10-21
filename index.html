@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://yasine-khamassi.vercel.app/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <style>
   :root{
     --bg:#050816;
@@ -29,7 +29,8 @@
     --accent-ink:#031612;
     --glow:rgba(45,212,191,.16);
     --maxw:1120px;
-    --sans:"Poppins",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --sans:"Hanken Grotesk",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --disp:"Bricolage Grotesque","Hanken Grotesk",ui-sans-serif,sans-serif;
     --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
     --nav-h:68px;
   }
@@ -47,7 +48,7 @@
   /* background layers */
   #stars{position:fixed;inset:0;z-index:-2;pointer-events:none}
   .bg-glow{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-  .bg-glow::before,.bg-glow::after{content:"";position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+  .bg-glow::before,.bg-glow::after{content:"";position:absolute;border-radius:50%;filter:blur(120px);opacity:.28}
   .bg-glow::before{width:520px;height:520px;right:-120px;top:4%;background:radial-gradient(circle,var(--glow),transparent 70%)}
   .bg-glow::after{width:460px;height:460px;left:-160px;bottom:0;background:radial-gradient(circle,rgba(56,189,248,.10),transparent 70%)}
 
@@ -232,6 +233,9 @@
     #top{min-height:auto}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}
+  /* distinctive display type (off the default-font look), brand unchanged */
+  .hero h1, h2.title, .xp-role, .card h4{font-family:var(--disp);letter-spacing:-.02em;font-weight:700}
+  .badge, .orb span{font-family:var(--disp)}
 </style>
 </head>
 <body>
@@ -249,6 +253,7 @@
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
+      <a href="https://github.com/Yasine-Khamassi" target="_blank" rel="noopener">GitHub</a>
       <a class="navcta" href="#contact">Contact</a>
     </nav>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
