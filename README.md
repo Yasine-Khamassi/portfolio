@@ -8,7 +8,7 @@ AI engineer in Dubai building autonomous agents, multi-step workflows and produc
 
 ## What's on the page
 - **Hero:** a simulated perimeter in canvas. Visitors can forge a webhook, flood the API, read someone else's order or hijack an AI agent, and watch which control stops it. Nothing leaves the browser.
-- **AI engineering:** a replay of the multi-agent coding coordinator handling a failing task, a trace of a question through the ATT&CK Analyst Assistant's RAG pipeline with its real eval numbers, and a description of the store platform. English by default, with an Arabic toggle on the chats.
+- **AI engineering:** a replay of the autonomous bug-resolution agent taking a user's report through to a fix waiting for human approval, a replay of the multi-agent coding coordinator handling a failing task, a trace of a question through the ATT&CK Analyst Assistant's RAG pipeline with its real eval numbers, and a description of the store platform. English by default, with an Arabic toggle on the chats.
 - **Security:** animated diagrams of five production systems, and the AI security lab with results that flip between attack and defence.
 - **Skills:** real logos from [Simple Icons](https://simpleicons.org/) (CC0) and line icons from [Lucide](https://lucide.dev/) (ISC), inlined as an SVG sprite.
 
