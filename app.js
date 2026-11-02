@@ -671,23 +671,12 @@
   };
   const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
 
-  /* ---------- coordinator: a replay of a task that fails, gets repaired and lands ---------- */
-  (function flow() {
-    const root = $("#flow");
+  /* ---------- agent workflows: replays that show a step failing, getting repaired and landing ---------- */
+  const replay = (rootSel, logSel, STEPS, row0) => {
+    const root = $(rootSel);
     if (!root) return;
     const rows = $$("li", root);
-    const out = $("#flowlog");
-    const STEPS = [
-      [0, "task: access-control, one worker owns its files"],
-      [1, "codex-1 builds it in its own worktree"],
-      [2, "claude-1 inspects the exact commit's diff"],
-      [3, "check failed: exit code 1", "bad"],
-      [4, "failure returned with evidence, repair round 1 of 3"],
-      [1, "codex-1 submits a corrected commit"],
-      [2, "earlier review void, claude-1 reviews the new commit"],
-      [3, "checks pass, verifier hash unchanged"],
-      [5, "integrated after checks on the combined branch"],
-    ];
+    const out = $(logSel);
     let run = 0, visible = false;
     const show = (i) => {
       const [row, text, bad] = STEPS[i];
@@ -717,7 +706,32 @@
       if (visible && !was) play();
       else if (!visible) run += 1;
     }, { threshold: .3 }).observe(root);
-  })();
+  };
+  replay("#bugflow", "#bugflowlog", [
+    [0, "report: the Pay button does nothing on my phone"],
+    [1, "reading the page's code, logs and recent commits"],
+    [2, "opening the app in a browser at the reported screen size"],
+    [3, "reproduced: the click never reaches the button"],
+    [4, "verdict: genuine and in scope"],
+    [5, "root cause: an overlay from the last commit covers the button"],
+    [6, "targeted patch applied"],
+    [7, "tests pass, browser regression fails", "bad"],
+    [8, "revising the patch, retry 1"],
+    [7, "all checks pass, the original bug no longer reproduces"],
+    [9, "pull request opened with root cause and evidence"],
+    [10, "outcome recorded, waiting for human approval"],
+  ]);
+  replay("#flow", "#flowlog", [
+    [0, "task: access-control, one worker owns its files"],
+    [1, "codex-1 builds it in its own worktree"],
+    [2, "claude-1 inspects the exact commit's diff"],
+    [3, "check failed: exit code 1", "bad"],
+    [4, "failure returned with evidence, repair round 1 of 3"],
+    [1, "codex-1 submits a corrected commit"],
+    [2, "earlier review void, claude-1 reviews the new commit"],
+    [3, "checks pass, verifier hash unchanged"],
+    [5, "integrated after checks on the combined branch"],
+  ]);
 
   /* ---------- RAG trace: a question moves through the real pipeline stages ---------- */
   (function trace() {

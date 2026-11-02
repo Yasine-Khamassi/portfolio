@@ -415,6 +415,10 @@ html { scrollbar-color: #24305a var(--bg); }
 .flow li.bad { background: var(--red-soft); }
 .flow li.bad .ic, .flow li.bad b { color: var(--red); }
 .flow li.bad span { color: var(--text-2); }
+.flow-tight li { padding-block: 6px; }
+.flow-tight span { font-size: .78rem; line-height: 1.3; }
+.evalc-title { font: 600 1.375rem/1.2 var(--disp); color: var(--text); }
+.evalc-text { margin-top: 8px; color: var(--text-2); font-size: .9375rem; line-height: 1.5; }
 .flow-log { margin-top: 12px; min-height: 2.9em; padding: 8px 10px; border-radius: 8px; background: rgba(226, 232, 240, .04); font: 400 .8125rem/1.45 var(--mono); color: var(--teal-2); }
 .flow-log.bad { color: var(--red); }
 .safe { display: grid; border-top: 1px solid var(--line); }
@@ -565,3 +569,4 @@ html { scrollbar-color: #24305a var(--bg); }
   .js .wt-steps li, .js .ag-steps li { opacity: 1; }
 }
 
+.evalc:has(.evalc-title) { justify-content: flex-start; }
