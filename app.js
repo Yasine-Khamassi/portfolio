@@ -151,16 +151,16 @@
     const triesEl = $("#pm-tries");
     if (!ctx) return;
 
-    const LAVENDER = "207,196,255";
-    const LIME = "200,240,49";
-    const VIOLET = "169,143,255";
-    const BLACK = "8,8,13";
+    const INK = "16,40,60";
+    const AMBER = "224,141,10";
+    const PLUM = "92,63,181";
+    const WHITE = "255,255,255";
     const GATES = [
       { label: "rate limit", short: "rate limit", k: .26 },
       { label: "signature", short: "signature", k: .5 },
       { label: "role + row-level security", short: "role + RLS", k: .74 },
     ];
-    const COBALT = "15,69,216";
+    const SKY = "110,185,235";
     const TRUST = [.5, .7, .92];
     const HEAD = 40, LANE = 10;
     let W = 0, H = 0, dpr = 1;
@@ -170,6 +170,7 @@
 
     const mono = () => getComputedStyle(document.body).getPropertyValue("--mono");
     const disp = () => getComputedStyle(document.body).getPropertyValue("--disp");
+    const sans = () => getComputedStyle(document.body).getPropertyValue("--sans");
     const gateX = (i) => Math.round(GATES[i].k * W);
     const lanes = () => Math.max(4, Math.floor((H - HEAD - 16) / LANE));
     const laneY = (n) => HEAD + 8 + (n + .5) * LANE;
@@ -216,7 +217,7 @@
     const flash = (gate, y, rgb, life = 1, reach = 40) => flashes.push({ gate, y, rgb, life, max: life, reach });
     const refuse = (gate, y, big) => {
       stopped[gate] += 1;
-      flash(gate, y, VIOLET, big ? 1.2 : .6, big ? 72 : 16);
+      flash(gate, y, PLUM, big ? 1.2 : .6, big ? 72 : 16);
       marks.push({ x: gateX(gate) - 4, y, life: big ? 1.8 : 1.5, max: big ? 1.8 : 1.5, size: big ? 10 : 6 });
     };
 
@@ -302,19 +303,19 @@
       ctx.clearRect(0, 0, W, H);
       ctx.lineCap = "butt";
 
-      /* gates: cobalt bars, named on top, counting what they stopped */
+      /* gates: sky bars, named on top, counting what they stopped */
       ctx.textBaseline = "middle";
       ctx.textAlign = "left";
       GATES.forEach((g, i) => {
         const x = gateX(i);
-        ctx.fillStyle = `rgb(${COBALT})`;
+        ctx.fillStyle = `rgb(${SKY})`;
         ctx.fillRect(x - 2, HEAD - 8, 5, H);
-        ctx.font = "500 12px " + mono();
-        ctx.fillStyle = `rgb(${LAVENDER})`;
+        ctx.font = "500 14px " + sans();
+        ctx.fillStyle = `rgb(${INK})`;
         const name = W < 600 ? g.short : g.label;
         ctx.fillText(name, x - 2, HEAD - 20);
         if (W >= 600 && stopped[i]) {
-          ctx.fillStyle = `rgb(${VIOLET})`;
+          ctx.fillStyle = `rgb(${PLUM})`;
           ctx.fillText(String(stopped[i]), x - 2 + ctx.measureText(name).width + 8, HEAD - 20);
         }
       });
@@ -325,10 +326,10 @@
         ctx.fillRect(gateX(f.gate) - 2, Math.max(HEAD - 8, f.y - f.reach), 5, f.reach * 2);
       });
 
-      /* requests earn trust gate by gate: dim, brighter, then lime once the last gate clears them */
+      /* requests earn trust gate by gate: dim, brighter, then amber once the last gate clears them */
       packets.forEach((p) => {
         ctx.lineWidth = p.weight;
-        ctx.strokeStyle = p.hot ? `rgb(${VIOLET})` : p.next >= GATES.length ? `rgb(${LIME})` : `rgba(${LAVENDER},${TRUST[p.next]})`;
+        ctx.strokeStyle = p.hot ? `rgb(${PLUM})` : p.next >= GATES.length ? `rgb(${AMBER})` : `rgba(${INK},${TRUST[p.next]})`;
         ctx.beginPath();
         ctx.moveTo(p.x - p.len, p.y);
         ctx.lineTo(p.x, p.y);
@@ -337,9 +338,9 @@
           ctx.font = "500 12px " + mono();
           const w = ctx.measureText(p.text).width + 12;
           const lx = p.x - p.len;
-          ctx.fillStyle = `rgb(${VIOLET})`;
+          ctx.fillStyle = `rgb(${PLUM})`;
           ctx.fillRect(lx, p.y - 24, w, 20);
-          ctx.fillStyle = `rgb(${BLACK})`;
+          ctx.fillStyle = `rgb(${WHITE})`;
           ctx.textAlign = "left";
           ctx.fillText(p.text, lx + 6, p.y - 14);
         }
@@ -347,14 +348,14 @@
 
       /* refused here */
       marks.forEach((m) => {
-        ctx.fillStyle = `rgba(${VIOLET},${Math.min(1, m.life / m.max * 1.6)})`;
+        ctx.fillStyle = `rgba(${PLUM},${Math.min(1, m.life / m.max * 1.6)})`;
         ctx.fillRect(m.x - m.size, m.y - m.size / 2, m.size, m.size);
       });
       tags.forEach((t) => {
         const k = Math.min(1, t.life * 1.4);
-        ctx.font = "600 32px " + disp();
+        ctx.font = "400 32px " + disp();
         ctx.textAlign = "right";
-        ctx.fillStyle = `rgba(${VIOLET},${k})`;
+        ctx.fillStyle = `rgba(${PLUM},${k})`;
         ctx.fillText(t.text, t.x - 12, t.y);
       });
 
@@ -389,7 +390,7 @@
               p.hit?.();
               return false;
             }
-            flash(i, p.y, LIME, .22, 6);
+            flash(i, p.y, AMBER, .22, 6);
           }
         }
         return p.x - p.len <= W;
@@ -799,10 +800,10 @@
         const start = performance.now() + i * 120;
         const tick = (t) => {
           const k = Math.max(0, Math.min(1, (t - start) / 1300));
-          el.textContent = "0." + String(Math.round(to * (1 - Math.pow(1 - k, 4)))).padStart(3, "0");
+          el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 4))));
           if (k < 1) requestAnimationFrame(tick);
         };
-        el.textContent = "0.000";
+        el.textContent = "0";
         requestAnimationFrame(tick);
       });
     }, { threshold: .4 }).observe(box);
