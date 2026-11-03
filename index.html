@@ -7,7 +7,7 @@
 <meta name="description" content="Yasine Khamassi builds AI agents and production LLM applications: multi-step workflows that use tools, verify their own results and stay inside defined permissions. AI engineer in Dubai with a background in cyber security.">
 <meta name="author" content="Yasine Khamassi">
 <meta name="robots" content="index,follow">
-<meta name="theme-color" content="#050816">
+<meta name="theme-color" content="#0f45d8">
 <link rel="canonical" href="https://yasine-khamassi.vercel.app/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:title" content="Yasine Khamassi | AI Engineer: Agentic Systems and LLM Applications">
@@ -40,7 +40,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="styles.css">
 <script src="app.js" defer></script>
 </head>
@@ -52,8 +52,7 @@
 <header class="nav" id="nav">
   <div class="nav-in">
     <a class="brand" href="#top" aria-label="Yasine Khamassi, back to top">
-      <span class="brand-mark">YK</span>
-      <span class="brand-name">Yasine Khamassi</span>
+      Yasine Khamassi
     </a>
     <nav class="nav-links" id="navlinks" aria-label="Main">
       <span class="nav-ind" id="navind" aria-hidden="true"></span>
@@ -83,21 +82,24 @@
 <main id="main">
 
 <section class="hero" id="hero" aria-labelledby="hero-title">
-  <div class="pm-stage" id="pmstage">
-    <canvas id="pm" aria-hidden="true"></canvas>
-    <div class="pm-core" id="pmcore" aria-hidden="true"><span>YK</span></div>
+  <div class="hero-top on-cobalt">
+    <div class="wrap">
+      <h1 id="hero-title" class="hero-name"><span class="hn"><span>Yasine</span></span> <span class="hn"><span>Khamassi</span></span></h1>
+      <div class="hero-sub">
+        <p class="hero-claim">I build AI agents that do the work, then prove it.<span class="stamp" aria-hidden="true"><svg class="ic"><use href="#i-check"/></svg></span></p>
+        <div class="hero-side">
+          <p class="hero-lede">AI engineer in Dubai working on agentic systems, multi-step workflows and production LLM applications, with a cyber security background that keeps every agent inside its limits.</p>
+          <div class="hero-actions">
+            <a class="btn" href="#ai">See my AI work <svg class="ic" aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
+            <a class="btn btn-quiet" href="#projects">What I've secured</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="hero-copy">
-    <h1 id="hero-title" class="hero-title"><span class="ht-line"><span>Hi, I'm</span></span> <span class="ht-line"><span class="teal">Yasine</span></span></h1>
-    <p class="hero-lede"><strong>I build AI agents that do the work, then prove it.</strong> AI engineer in Dubai working on agentic systems, multi-step workflows and production LLM applications, with a cyber security background that keeps every agent inside its limits.</p>
-    <p class="hero-term"><span class="prompt" aria-hidden="true">&gt;</span> <span id="typed">plan. act. verify.</span><span class="caret" aria-hidden="true"></span></p>
-    <div class="hero-actions">
-      <a class="btn" href="#ai">See my AI work <svg class="ic" aria-hidden="true"><use href="#i-arrow-down"/></svg></a>
-      <a class="btn btn-quiet" href="#projects">What I've secured</a>
-    </div>
-    <p class="hero-where"><svg class="ic" aria-hidden="true"><use href="#i-map-pin"/></svg> Dubai, UAE</p>
-  </div>
+  <div class="hero-bench on-black">
+    <div class="pm-stage" id="pmstage"><canvas id="pm" aria-hidden="true"></canvas></div>
 
   <aside class="console" aria-labelledby="pm-title">
     <div class="console-head">
@@ -113,9 +115,10 @@
     <div class="log" id="pm-log" role="log" aria-live="polite" aria-label="What the controls did"></div>
     <p class="console-note">Simulated in your browser, nothing is sent. Each control is one I've built.</p>
   </aside>
+  </div>
 </section>
 
-<section class="stats" aria-label="In numbers">
+<section class="stats on-lavender" aria-label="In numbers">
   <dl class="stats-in">
     <div class="stat"><dd class="num" data-count="800" data-after="+">800+</dd><dt>orders processed</dt></div>
     <div class="stat"><dd class="num" data-count="30" data-after="+">30+</dd><dt>serverless functions secured</dt></div>
@@ -125,7 +128,7 @@
   </dl>
 </section>
 
-<section class="section about" id="about" aria-labelledby="about-title">
+<section class="section about on-black" id="about" aria-labelledby="about-title">
   <div class="wrap about-grid">
     <h2 id="about-title" class="h2 split">I build AI systems that carry out real work and prove it worked</h2>
     <div class="prose" data-r="up">
@@ -139,15 +142,15 @@
   </div>
   <div class="wrap">
     <ul class="controls">
-      <li class="control spot" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span><div><h3>Access control</h3><p>Owner, admin and user roles, enforced with PostgreSQL Row-Level Security and JWT checks across 30+ serverless functions.</p></div></li>
-      <li class="control spot" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-webhook"/></svg></span><div><h3>API and webhook security</h3><p>HMAC-SHA256 signatures with constant-time comparison, fail-closed endpoints, per-IP rate limiting, input validation and headers like HSTS.</p></div></li>
-      <li class="control spot" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-shield-alert"/></svg></span><div><h3>Fraud prevention</h3><p>Customers verify their account details before anything is delivered. Orders not delivered within 2 days refund automatically.</p></div></li>
-      <li class="control spot" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-bell-ring"/></svg></span><div><h3>Monitoring and change control</h3><p>Heartbeat watchdogs, real-time alerts and GitHub Actions issues when a check fails. Changes ship only as pull requests.</p></div></li>
+      <li class="control" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span><div><h3>Access control</h3><p>Owner, admin and user roles, enforced with PostgreSQL Row-Level Security and JWT checks across 30+ serverless functions.</p></div></li>
+      <li class="control" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-webhook"/></svg></span><div><h3>API and webhook security</h3><p>HMAC-SHA256 signatures with constant-time comparison, fail-closed endpoints, per-IP rate limiting, input validation and headers like HSTS.</p></div></li>
+      <li class="control" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-shield-alert"/></svg></span><div><h3>Fraud prevention</h3><p>Customers verify their account details before anything is delivered. Orders not delivered within 2 days refund automatically.</p></div></li>
+      <li class="control" data-r="up"><span class="control-ic"><svg class="ic" aria-hidden="true"><use href="#i-bell-ring"/></svg></span><div><h3>Monitoring and change control</h3><p>Heartbeat watchdogs, real-time alerts and GitHub Actions issues when a check fails. Changes ship only as pull requests.</p></div></li>
     </ul>
   </div>
 </section>
 
-<section class="section experience" id="experience" aria-labelledby="exp-title">
+<section class="section experience on-lavender" id="experience" aria-labelledby="exp-title">
   <div class="wrap exp-head">
     <h2 id="exp-title" class="h2 split">Experience</h2>
     <div class="prose" data-r="up">
@@ -161,7 +164,7 @@
       <li class="tl-item">
         <p class="tl-date">2022 – 2026</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-graduation-cap"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>Bachelor's in Cyber Security</h3>
           <p class="tl-org">Teesside University (UK) · BACU campus, Umm Al Quwain, UAE</p>
           <ul>
@@ -173,7 +176,7 @@
       <li class="tl-item">
         <p class="tl-date">Feb 2023 – Present</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-code-xml"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>Storefronts &amp; Data</h3>
           <p class="tl-org">Founder &amp; Technical Lead · Self-employed</p>
           <ul>
@@ -188,7 +191,7 @@
       <li class="tl-item">
         <p class="tl-date">Aug 2023 – Present</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-shield-check"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>API, Webhook &amp; Payment Security</h3>
           <p class="tl-org">Founder &amp; Technical Lead · Self-employed</p>
           <ul>
@@ -202,7 +205,7 @@
       <li class="tl-item">
         <p class="tl-date">Mar 2024 – Present</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-lock"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>Access Control &amp; Authentication</h3>
           <p class="tl-org">Founder &amp; Technical Lead · Self-employed</p>
           <ul>
@@ -215,7 +218,7 @@
       <li class="tl-item">
         <p class="tl-date">Nov 2024 – Present</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-receipt"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>Secure Order Delivery Portal</h3>
           <p class="tl-org">Founder &amp; Technical Lead · Self-employed</p>
           <ul>
@@ -229,7 +232,7 @@
       <li class="tl-item">
         <p class="tl-date">Jun 2025 – Present</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-activity"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>Monitoring &amp; Change Control</h3>
           <p class="tl-org">Founder &amp; Technical Lead · Self-employed</p>
           <ul>
@@ -243,7 +246,7 @@
       <li class="tl-item">
         <p class="tl-date">Aug 2025 – Sep 2026</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-credit-card"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>Payments &amp; IT Operations Associate</h3>
           <p class="tl-org">PayRow · Dubai</p>
           <ul>
@@ -259,7 +262,7 @@
       <li class="tl-item">
         <p class="tl-date">Oct 2026 – Present</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-bot"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>AI Security Lab</h3>
           <p class="tl-org">Independent projects</p>
           <ul>
@@ -272,7 +275,7 @@
       <li class="tl-item">
         <p class="tl-date">Oct 2026 – Present</p>
         <span class="tl-node" aria-hidden="true"><svg class="ic"><use href="#i-layers"/></svg></span>
-        <article class="tl-card spot">
+        <article class="tl-card">
           <h3>Agentic Systems &amp; LLM Applications</h3>
           <p class="tl-org">Independent projects</p>
           <ul>
@@ -289,7 +292,7 @@
   </div>
 </section>
 
-<section class="section ai" id="ai" aria-labelledby="ai-title">
+<section class="section ai on-black" id="ai" aria-labelledby="ai-title">
   <div class="wrap ai-head">
     <h2 id="ai-title" class="h2 split">AI systems that plan, use tools and prove the result</h2>
     <div class="prose" data-r="up">
@@ -301,7 +304,7 @@
     <article class="rag">
       <div class="rag-top">
         <div>
-          <h3>Autonomous Bug-Resolution Agent</h3>
+          <h3>Autonomous <span class="nb">Bug-Resolution</span> Agent</h3>
           <p>Bug reports are often vague, and some are simply wrong. This agent takes a report from a real user, works through the code, logs and recent commits, opens the app in a browser and tries to reproduce the problem before it trusts it. If the bug is real and in scope, it traces the root cause, writes a targeted fix, proves the fix worked and opens a pull request.</p>
           <p class="state">Working build on a private machine. The code isn't public.</p>
         </div>
@@ -482,7 +485,7 @@
   </div>
 </section>
 
-<section class="section projects" id="projects" aria-labelledby="proj-title">
+<section class="section projects on-cobalt" id="projects" aria-labelledby="proj-title">
   <div class="wrap proj-head">
     <h2 id="proj-title" class="h2 split">Systems I have secured</h2>
     <div class="prose" data-r="up">
@@ -507,17 +510,17 @@
             <circle r="5" class="token token-warn">
               <animateMotion dur="9s" repeatCount="indefinite" path="M359 90V234H496" keyPoints="0;0;.5;.5;1;1" keyTimes="0;.42;.62;.7;.88;1" calcMode="linear"/>
             </circle>
-              <rect class="box b1" x="20" y="62" width="102" height="56" rx="12"/><text x="71" y="95" class="t">Order paid</text>
-              <rect class="box b2" x="164" y="62" width="102" height="56" rx="12"/><text x="215" y="86" class="t">Account</text><text x="215" y="104" class="t">verified</text>
-              <rect class="box b3" x="308" y="62" width="102" height="56" rx="12"/><text x="359" y="86" class="t">Bot</text><text x="359" y="104" class="t">delivers</text>
-              <rect class="box b4 ok" x="452" y="62" width="88" height="56" rx="12"/><text x="496" y="95" class="t tok">Delivered</text>
-              <rect class="box warn" x="290" y="206" width="138" height="56" rx="12"/><text x="359" y="230" class="t">Not delivered</text><text x="359" y="248" class="t">in 2 days</text>
-              <rect class="box warn" x="452" y="206" width="88" height="56" rx="12"/><text x="496" y="239" class="t twarn">Refund</text>
+              <rect class="box b1" x="20" y="62" width="102" height="56" rx="2"/><text x="71" y="95" class="t">Order paid</text>
+              <rect class="box b2" x="164" y="62" width="102" height="56" rx="2"/><text x="215" y="86" class="t">Account</text><text x="215" y="104" class="t">verified</text>
+              <rect class="box b3" x="308" y="62" width="102" height="56" rx="2"/><text x="359" y="86" class="t">Bot</text><text x="359" y="104" class="t">delivers</text>
+              <rect class="box b4 ok" x="452" y="62" width="88" height="56" rx="2"/><text x="496" y="95" class="t tok">Delivered</text>
+              <rect class="box warn" x="290" y="206" width="138" height="56" rx="2"/><text x="359" y="230" class="t">Not delivered</text><text x="359" y="248" class="t">in 2 days</text>
+              <rect class="box warn" x="452" y="206" width="88" height="56" rx="2"/><text x="496" y="239" class="t twarn">Refund</text>
             </g>
             <g class="chips">
-              <g><rect x="20" y="302" width="168" height="34" rx="8"/><text x="104" y="324">No order runs twice</text></g>
-              <g><rect x="198" y="302" width="130" height="34" rx="8"/><text x="263" y="324">Crash recovery</text></g>
-              <g><rect x="338" y="302" width="202" height="34" rx="8"/><text x="439" y="324">Token-auth WebSockets</text></g>
+              <g><rect x="20" y="302" width="168" height="34" rx="2"/><text x="104" y="324">No order runs twice</text></g>
+              <g><rect x="198" y="302" width="130" height="34" rx="2"/><text x="263" y="324">Crash recovery</text></g>
+              <g><rect x="338" y="302" width="202" height="34" rx="2"/><text x="439" y="324">Token-auth WebSockets</text></g>
             </g>
           </svg>
         </div>
@@ -629,7 +632,7 @@
   </div>
 </section>
 
-<section class="section lab" id="ai-lab" aria-labelledby="lab-title">
+<section class="section lab" id="ai-lab" data-mode="attack" aria-labelledby="lab-title">
   <div class="wrap lab-head">
     <div>
       <h2 id="lab-title" class="h2 split">AI security lab: attack, defend, verify</h2>
@@ -644,7 +647,7 @@
 
   <div class="wrap">
     <ul class="runs" id="runs" data-mode="attack">
-      <li class="run spot" data-total="10" data-a="1" data-d="0">
+      <li class="run" data-total="10" data-a="1" data-d="0">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/llm-red-team-lab">LLM Red-Team Lab <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
           <p>Attack a local support chatbot with prompt-injection probes and score leaks by ground truth: a planted fake API key either shows up in the reply or it doesn't.</p>
@@ -654,7 +657,7 @@
           <p class="run-num"><b><span class="v-a">1</span><span class="v-d">0</span></b> of 10 <span>probes leaked</span></p>
         </div>
       </li>
-      <li class="run spot" data-total="4" data-a="4" data-d="1">
+      <li class="run" data-total="4" data-a="4" data-d="1">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/secure-rag-pipeline">Secure RAG Pipeline <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
           <p>Entitlement filtering removes both cross-role leaks. One indirect injection still gets through, and I report it: labelling retrieved content as untrusted raises the bar but doesn't solve it.</p>
@@ -664,7 +667,7 @@
           <p class="run-num"><b><span class="v-a">4</span><span class="v-d">1</span></b> of 4 <span>attacks succeeded</span></p>
         </div>
       </li>
-      <li class="run spot" data-total="2" data-a="2" data-d="0">
+      <li class="run" data-total="2" data-a="2" data-d="0">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/ai-agent-security-gateway">AI Agent Security Gateway <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
           <p>The injected model still tries the restricted tool call. A gateway outside the model denies it, so it never runs.</p>
@@ -674,7 +677,7 @@
           <p class="run-num"><b><span class="v-a">2</span><span class="v-d">0</span></b> of 2 <span>unauthorized actions ran</span></p>
         </div>
       </li>
-      <li class="run spot" data-total="18" data-a="4" data-d="1">
+      <li class="run" data-total="18" data-a="4" data-d="1">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/attack-rag">ATT&amp;CK Analyst Assistant <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
           <p>Hybrid-search RAG over MITRE ATT&amp;CK that answers SOC questions with cited sources, in English and Arabic. Hybrid search and reranking lift nDCG@10 from 0.48 to 0.77, tenants are isolated by Row-Level Security, and attack success falls from 22% to 6% with guards.</p>
@@ -684,7 +687,7 @@
           <p class="run-num"><b><span class="v-a">4</span><span class="v-d">1</span></b> of 18 <span>attacks succeeded</span></p>
         </div>
       </li>
-      <li class="run spot" data-total="17" data-a="5" data-d="0" data-kind="detect">
+      <li class="run" data-total="17" data-a="5" data-d="0" data-kind="detect">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/llm-threat-detection">LLM Threat Detection <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
           <p>Prevention fails eventually. Detection rules run over telemetry with no access to the labels, then get scored against them, with an incident playbook for what comes next.</p>
@@ -694,7 +697,7 @@
           <p class="run-num"><b><span class="v-a">5</span><span class="v-d">5</span></b> <span class="v-a-t">attack sessions in 17</span><span class="v-d-t">of 5 caught, 0 false alarms</span></p>
         </div>
       </li>
-      <li class="run spot" data-total="5" data-a="5" data-d="1" data-kind="govern">
+      <li class="run" data-total="5" data-a="5" data-d="1" data-kind="govern">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/ai-risk-governance">AI Risk Governance <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
           <p>An AI inventory, risk register, control mapping and evidence trail, with one real red-team finding traced end to end. The RAG injection above stays open on purpose: tracked, not closed on paper.</p>
@@ -705,11 +708,11 @@
         </div>
       </li>
     </ul>
-    <p class="lab-foot">Results are from my own runs and are in each repo. Red dots show what got through.</p>
+    <p class="lab-foot">Results are from my own runs and are in each repo. Filled dots got through under attack. With controls on, lime was stopped and violet still got through.</p>
   </div>
 </section>
 
-<section class="section skills" id="skills" aria-labelledby="skills-title">
+<section class="section skills on-lavender" id="skills" aria-labelledby="skills-title">
   <div class="wrap">
     <h2 id="skills-title" class="h2 split">What I work with</h2>
   </div>
@@ -846,7 +849,7 @@
   </div>
 </section>
 
-<section class="contact" id="contact" aria-labelledby="contact-title">
+<section class="contact on-cobalt" id="contact" aria-labelledby="contact-title">
   <div class="wrap contact-in">
     <h2 id="contact-title" class="contact-title split">Get in touch</h2>
     <p class="contact-lede" data-r="up">Open to AI engineering roles across the UAE: agentic systems, LLM applications and AI security. Also open to Security Analyst and SOC roles.</p>
@@ -865,10 +868,10 @@
 
 </main>
 
-<footer class="foot">
+<footer class="foot on-black">
   <div class="wrap foot-in">
     <p>Yasine Khamassi · AI Engineer · Dubai, UAE</p>
-    <p class="foot-term">plan. act. verify.</p>
+    <p>Plan, act, verify</p>
     <p>© 2026</p>
   </div>
 </footer>

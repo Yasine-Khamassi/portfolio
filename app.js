@@ -44,8 +44,8 @@
     if (active < 0) { ind.style.opacity = 0; return; }
     const a = links[active];
     ind.style.opacity = 1;
-    ind.style.width = a.offsetWidth + "px";
-    ind.style.transform = `translateX(${a.offsetLeft}px)`;
+    ind.style.width = a.offsetWidth - 24 + "px";
+    ind.style.transform = `translateX(${a.offsetLeft + 12}px)`;
   };
   const onScroll = () => {
     const y = scrollY;
@@ -116,18 +116,21 @@
   }, { threshold: .6 });
   $$(".num[data-count]").forEach((el) => counter.observe(el));
 
-  /* ---------- terminal line types itself ---------- */
-  const typed = $("#typed");
-  if (!reduce && typed) {
-    const full = typed.textContent;
-    typed.textContent = "";
-    typed.setAttribute("aria-label", full);
-    let i = 0;
-    setTimeout(function next() {
-      typed.textContent = full.slice(0, ++i);
-      if (i < full.length) setTimeout(next, full[i - 1] === "." ? 240 : 42);
-    }, 800);
-  }
+  /* ---------- the name runs the full width of the page ---------- */
+  const heroName = $("#hero-title");
+  const fitName = () => {
+    if (innerWidth > 1000 && innerHeight <= 680) { heroName.style.fontSize = ""; return; }
+    const parts = $$(".hn", heroName);
+    heroName.style.fontSize = "100px";
+    /* stacked on a phone, so the longer word sets the size there */
+    const width = innerWidth <= 640
+      ? parts[1].firstElementChild.getBoundingClientRect().width
+      : parts[1].getBoundingClientRect().right - parts[0].getBoundingClientRect().left;
+    heroName.style.fontSize = (100 * heroName.clientWidth / width).toFixed(2) + "px";
+  };
+  fitName();
+  document.fonts?.ready.then(fitName);
+  addEventListener("resize", fitName, { passive: true });
 
   /* ---------- marquee: double the track so the loop has no seam ---------- */
   $$(".marquee-row").forEach((row) => {
@@ -139,28 +142,38 @@
   const marquee = $(".marquee");
   if (marquee) new IntersectionObserver(([e]) => marquee.classList.toggle("off", !e.isIntersecting)).observe(marquee);
 
-  /* ---------- the perimeter: traffic, gates and the visitor's attacks ---------- */
+  /* ---------- the bench: traffic crosses three gates, and the visitor can attack them ---------- */
   (function perimeter() {
-    const hero = $("#hero");
     const stage = $("#pmstage");
     const canvas = $("#pm");
-    const core = $("#pmcore");
     const log = $("#pm-log");
     const ctx = canvas.getContext("2d");
     const triesEl = $("#pm-tries");
     if (!ctx) return;
 
-    const TEAL = "45,212,191";
-    const RED = "251,113,133";
+    const LAVENDER = "207,196,255";
+    const LIME = "200,240,49";
+    const VIOLET = "169,143,255";
+    const BLACK = "8,8,13";
     const GATES = [
-      { label: "rate limit", k: 1, dash: [26, 12], speed: .05, dir: 1 },
-      { label: "signature", k: .69, dash: [3, 7], speed: .09, dir: -1 },
-      { label: "role + row-level security", k: .42, dash: [58, 10], speed: .035, dir: 1 },
+      { label: "rate limit", short: "rate limit", k: .26 },
+      { label: "signature", short: "signature", k: .5 },
+      { label: "role + row-level security", short: "role + RLS", k: .74 },
     ];
-    let W = 0, H = 0, cx = 0, cy = 0, S = 0, coreR = 56, dpr = 1, wide = true;
-    let packets = [], flashes = [], sparks = [], tags = [], pulse = 0;
-    let px = 0, py = 0, tx = 0, ty = 0;
-    let running = false, last = 0, bornAt = 0, nextSpawn = 0, nextLog = 0, quietUntil = 0, tries = 0;
+    const COBALT = "15,69,216";
+    const TRUST = [.5, .7, .92];
+    const HEAD = 40, LANE = 10;
+    let W = 0, H = 0, dpr = 1;
+    let packets = [], flashes = [], marks = [], tags = [];
+    const stopped = GATES.map(() => 0);
+    let running = false, last = 0, nextSpawn = 0, nextLog = 0, quietUntil = 0, tries = 0;
+
+    const mono = () => getComputedStyle(document.body).getPropertyValue("--mono");
+    const disp = () => getComputedStyle(document.body).getPropertyValue("--disp");
+    const gateX = (i) => Math.round(GATES[i].k * W);
+    const lanes = () => Math.max(4, Math.floor((H - HEAD - 16) / LANE));
+    const laneY = (n) => HEAD + 8 + (n + .5) * LANE;
+    const randLane = () => laneY(Math.floor(Math.random() * lanes()));
 
     const resize = () => {
       const r = stage.getBoundingClientRect();
@@ -168,29 +181,14 @@
       dpr = Math.min(devicePixelRatio || 1, 2);
       canvas.width = Math.round(W * dpr);
       canvas.height = Math.round(H * dpr);
-      wide = innerWidth > 1000;
-      if (wide) {
-        S = Math.min(W * .235, H * .4);
-        cx = W * .69;
-        cy = Math.max(S + 84, H * .41);
-      } else {
-        S = Math.min(W * .46, H * .47);
-        cx = W / 2;
-        cy = H / 2;
-      }
-      coreR = Math.max(34, S * .19);
-      core.style.setProperty("--cx", cx + "px");
-      core.style.setProperty("--cy", cy + "px");
-      core.style.setProperty("--core", coreR * 2 + "px");
-      if (!running) draw(performance.now());
+      if (!running) draw();
     };
 
-    const gateR = (i) => GATES[i].k * S;
-    const addLog = (text, kind) => {
+    const addLog = (text, kind, ago = 0) => {
       const li = document.createElement("div");
       if (kind) li.className = kind;
       const t = document.createElement("time");
-      t.textContent = new Date().toTimeString().slice(0, 8);
+      t.textContent = new Date(Date.now() - ago * 1000).toTimeString().slice(0, 8);
       const s = document.createElement("span");
       s.textContent = text;
       li.append(t, s);
@@ -198,30 +196,28 @@
       while (log.children.length > 12) log.firstChild.remove();
     };
 
-    /* a packet travels inward in polar space and either passes a gate or stops there */
+    /* a request runs left to right on its lane, and either clears a gate or stops at it */
     const spawn = (o) => {
-      const a = o.a ?? Math.random() * Math.PI * 2;
-      const r0 = o.r0 ?? S * (1.75 + Math.random() * .5);
+      const len = o.len ?? 12 + Math.random() * 56;
       packets.push({
-        a, r: r0, r0,
-        speed: o.speed ?? (S * (.75 + Math.random() * .5)),
-        curl: o.curl ?? (Math.random() - .5) * .35,
-        bad: !!o.bad,
+        x: o.x ?? -len,
+        y: o.y ?? randLane(),
+        len,
+        speed: o.speed ?? W * (.14 + Math.random() * .16),
         stop: o.stop ?? -1,
-        size: o.size ?? 1,
+        hot: !!o.hot,
+        weight: o.weight ?? 2 + Math.floor(Math.random() * 3),
         next: 0,
         text: o.text,
-        hit: o.hit,
         tag: o.tag,
+        hit: o.hit,
       });
     };
-    const flash = (gate, a, rgb, life = 1) => flashes.push({ gate, a, rgb, life, max: life });
-    const burst = (x, y, rgb, n = 12) => {
-      for (let i = 0; i < n; i++) {
-        const t = Math.random() * Math.PI * 2;
-        const v = 60 + Math.random() * 150;
-        sparks.push({ x, y, vx: Math.cos(t) * v, vy: Math.sin(t) * v, life: .5 + Math.random() * .4, rgb });
-      }
+    const flash = (gate, y, rgb, life = 1, reach = 40) => flashes.push({ gate, y, rgb, life, max: life, reach });
+    const refuse = (gate, y, big) => {
+      stopped[gate] += 1;
+      flash(gate, y, VIOLET, big ? 1.2 : .6, big ? 72 : 16);
+      marks.push({ x: gateX(gate) - 4, y, life: big ? 1.8 : 1.5, max: big ? 1.8 : 1.5, size: big ? 10 : 6 });
     };
 
     const ATTACKS = {
@@ -242,12 +238,15 @@
       },
     };
 
+    const redrawSoon = () => { draw(); setTimeout(() => { flashes = []; marks = []; tags = []; draw(); }, 1200); };
+
     const runAttack = (name, btn) => {
       tries += 1;
       triesEl.textContent = tries;
       quietUntil = performance.now() + 4200;
       btn?.classList.add("live");
       const done = () => btn?.classList.remove("live");
+      const mid = laneY(Math.floor(lanes() * (.2 + Math.random() * .6)));
       if (name === "flood") {
         addLog("one IP, hundreds of requests a minute");
         const hit = () => {
@@ -255,14 +254,12 @@
           addLog("429 too many requests", "no");
           done();
         };
-        if (reduce) { flash(0, -.6, RED, 1.2); hit(); redrawSoon(); return; }
-        const a = Math.random() * Math.PI * 2;
+        if (reduce) { refuse(0, mid, true); tags.push({ text: "429", x: gateX(0), y: mid, life: 1.2, max: 1.2 }); hit(); redrawSoon(); return; }
         const total = 26;
         for (let i = 0; i < total; i++) {
           setTimeout(() => spawn({
-            a: a + (Math.random() - .5) * .8,
-            bad: true, stop: 0, speed: S * (1.9 + Math.random() * .6), size: .8, curl: 0,
-            r0: S * 1.6,
+            y: mid + (Math.floor(Math.random() * 13) - 6) * LANE,
+            hot: true, stop: 0, speed: W * .42, len: 24, weight: 2,
             tag: i === total - 1 ? "429" : null,
             hit: i === total - 1 ? hit : null,
           }), i * 38);
@@ -272,38 +269,25 @@
       const atk = ATTACKS[name];
       atk.first.forEach((l) => addLog(l));
       const hit = () => { atk.after.forEach(([l, k], i) => setTimeout(() => addLog(l, k), i * 240)); done(); };
-      if (reduce) { flash(atk.stop, -.6, RED, 1.2); hit(); redrawSoon(); return; }
-      spawn({
-        a: -Math.PI * (.15 + Math.random() * .7), bad: true, stop: atk.stop, r0: S * 1.55,
-        speed: S * .85, curl: (Math.random() - .5) * .5, size: 1.9,
-        text: atk.text, tag: atk.tag, hit,
-      });
+      if (reduce) { refuse(atk.stop, mid, true); tags.push({ text: atk.tag, x: gateX(atk.stop), y: mid, life: 1.2, max: 1.2 }); hit(); redrawSoon(); return; }
+      spawn({ y: mid, hot: true, stop: atk.stop, speed: W * .3, len: 64, weight: 4, text: atk.text, tag: atk.tag, hit });
     };
-    const redrawSoon = () => { draw(performance.now()); setTimeout(() => { flashes = []; draw(performance.now()); }, 1200); };
     $$(".attack").forEach((b) => b.addEventListener("click", () => runAttack(b.dataset.attack, b)));
 
-    /* clicking the rings sends a bad request from that exact spot */
+    /* clicking the strip sends a bad request from that exact spot, into the next gate along */
     canvas.addEventListener("pointerdown", (e) => {
       if (reduce) return;
       const r = canvas.getBoundingClientRect();
-      const x = e.clientX - r.left - cx, y = e.clientY - r.top - cy;
-      const d = Math.hypot(x, y);
-      let stop = -1;
-      for (let i = 0; i < GATES.length; i++) if (d > gateR(i)) { stop = i; break; }
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      let stop = GATES.findIndex((_, i) => gateX(i) > x);
+      const from = stop < 0 ? gateX(2) - 64 : x;
       if (stop < 0) stop = 2;
       tries += 1;
       triesEl.textContent = tries;
       quietUntil = performance.now() + 2600;
-      spawn({ a: Math.atan2(y, x), r0: Math.max(d, gateR(stop) + 8), bad: true, stop, speed: S * 1.2, curl: 0, size: 1.5, tag: stop === 0 ? "429" : stop === 1 ? "403" : "0 rows" });
+      spawn({ x: from, y: Math.max(HEAD + 12, y), hot: true, stop, speed: W * .34, len: 32, weight: 3, tag: stop === 0 ? "429" : stop === 1 ? "403" : "0 rows" });
       addLog(`request from the outside ${["hits the rate limit", "fails the signature check", "has no access to that row"][stop]}`, "no");
     });
-
-    hero.addEventListener("pointermove", (e) => {
-      const r = hero.getBoundingClientRect();
-      tx = ((e.clientX - r.left) / r.width - .5) * 14;
-      ty = ((e.clientY - r.top) / r.height - .5) * 14;
-    }, { passive: true });
-    hero.addEventListener("pointerleave", () => { tx = 0; ty = 0; });
 
     const ambientLines = [
       ["200 POST /webhook/orders  signature ok", "ok"],
@@ -313,120 +297,67 @@
       ["429 GET /orders  per-IP limit", "no"],
     ];
 
-    const ease = (k) => 1 - Math.pow(1 - k, 3);
-
-    function draw(now) {
-      const age = reduce ? 1 : Math.min(1, (now - bornAt) / 1500);
+    function draw() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      const ox = cx + px, oy = cy + py;
+      ctx.lineCap = "butt";
 
-      /* rings sweep in, then keep turning */
+      /* gates: cobalt bars, named on top, counting what they stopped */
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "left";
       GATES.forEach((g, i) => {
-        const r = g.k * S;
-        const k = ease(Math.max(0, Math.min(1, age * 1.5 - i * .22)));
-        const spin = reduce ? 0 : (now / 1000) * g.speed * g.dir;
-        ctx.save();
-        ctx.translate(ox, oy);
-        ctx.rotate(spin - Math.PI / 2);
-        ctx.setLineDash(g.dash);
-        ctx.lineWidth = i === 1 ? 2.5 : 1.5;
-        ctx.strokeStyle = `rgba(${TEAL},${i === 1 ? .55 : .42})`;
-        ctx.beginPath();
-        ctx.arc(0, 0, r, 0, Math.PI * 2 * k);
-        ctx.stroke();
-        ctx.restore();
-      });
-
-      /* gate names sit on calm space above the rings */
-      if (age > .7) {
-        ctx.setLineDash([]);
-        ctx.font = "500 12px " + getComputedStyle(document.body).getPropertyValue("--mono");
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-        GATES.forEach((g, i) => {
-          const r = g.k * S;
-          const y = oy - r;
-          const w = ctx.measureText(g.label).width + 14;
-          ctx.fillStyle = "rgba(5,8,22,.92)";
-          ctx.fillRect(ox - w / 2, y - 10, w, 20);
-          ctx.fillStyle = `rgba(179,188,205,${Math.min(1, (age - .7) * 3.4)})`;
-          ctx.fillText(g.label, ox, y);
-        });
-      }
-
-      /* where a gate just acted */
-      flashes.forEach((f) => {
-        const r = gateR(f.gate);
-        const k = f.life / f.max;
-        ctx.setLineDash([]);
-        ctx.lineWidth = 2 + 4 * k;
-        ctx.strokeStyle = `rgba(${f.rgb},${k})`;
-        ctx.beginPath();
-        ctx.arc(ox, oy, r, f.a - .34, f.a + .34);
-        ctx.stroke();
-      });
-
-      /* packets */
-      packets.forEach((p) => {
-        const x = ox + Math.cos(p.a) * p.r;
-        const y = oy + Math.sin(p.a) * p.r;
-        const len = 18 * p.size + (p.bad ? 10 : 0);
-        const tailA = p.a - p.curl * .05;
-        const x2 = ox + Math.cos(tailA) * (p.r + len);
-        const y2 = oy + Math.sin(tailA) * (p.r + len);
-        const rgb = p.bad ? RED : TEAL;
-        const fade = Math.min(1, (p.r0 - p.r) / 70 + (p.size > 1 ? 1 : 0));
-        const g = ctx.createLinearGradient(x, y, x2, y2);
-        g.addColorStop(0, `rgba(${rgb},${.95 * fade})`);
-        g.addColorStop(1, `rgba(${rgb},0)`);
-        ctx.setLineDash([]);
-        ctx.strokeStyle = g;
-        ctx.lineWidth = 2 * p.size;
-        ctx.lineCap = "round";
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
-        ctx.fillStyle = `rgba(${rgb},${fade})`;
-        ctx.beginPath();
-        ctx.arc(x, y, 2.6 * p.size, 0, Math.PI * 2);
-        ctx.fill();
-        if (p.text) {
-          ctx.font = "500 12px " + getComputedStyle(document.body).getPropertyValue("--mono");
-          ctx.textAlign = "center";
-          ctx.fillStyle = `rgb(${RED})`;
-          ctx.fillText(p.text, x, y - 16);
+        const x = gateX(i);
+        ctx.fillStyle = `rgb(${COBALT})`;
+        ctx.fillRect(x - 2, HEAD - 8, 5, H);
+        ctx.font = "500 12px " + mono();
+        ctx.fillStyle = `rgb(${LAVENDER})`;
+        const name = W < 600 ? g.short : g.label;
+        ctx.fillText(name, x - 2, HEAD - 20);
+        if (W >= 600 && stopped[i]) {
+          ctx.fillStyle = `rgb(${VIOLET})`;
+          ctx.fillText(String(stopped[i]), x - 2 + ctx.measureText(name).width + 8, HEAD - 20);
         }
       });
 
-      /* sparks and verdict tags */
-      sparks.forEach((s) => {
-        ctx.strokeStyle = `rgba(${s.rgb},${Math.min(1, s.life * 2)})`;
-        ctx.lineWidth = 1.4;
-        ctx.setLineDash([]);
-        ctx.beginPath();
-        ctx.moveTo(s.x, s.y);
-        ctx.lineTo(s.x - s.vx * .03, s.y - s.vy * .03);
-        ctx.stroke();
-      });
-      tags.forEach((t) => {
-        const k = Math.min(1, t.life);
-        ctx.font = "700 " + (t.big ? 20 : 14) + "px " + getComputedStyle(document.body).getPropertyValue("--disp");
-        ctx.textAlign = "center";
-        ctx.fillStyle = `rgba(${RED},${k})`;
-        ctx.fillText(t.text, t.x, t.y);
+      /* where a gate just acted */
+      flashes.forEach((f) => {
+        ctx.fillStyle = `rgba(${f.rgb},${f.life / f.max})`;
+        ctx.fillRect(gateX(f.gate) - 2, Math.max(HEAD - 8, f.y - f.reach), 5, f.reach * 2);
       });
 
-      /* the core answers each clean request */
-      if (pulse > 0) {
-        ctx.setLineDash([]);
-        ctx.lineWidth = 1.5;
-        ctx.strokeStyle = `rgba(${TEAL},${pulse * .7})`;
+      /* requests earn trust gate by gate: dim, brighter, then lime once the last gate clears them */
+      packets.forEach((p) => {
+        ctx.lineWidth = p.weight;
+        ctx.strokeStyle = p.hot ? `rgb(${VIOLET})` : p.next >= GATES.length ? `rgb(${LIME})` : `rgba(${LAVENDER},${TRUST[p.next]})`;
         ctx.beginPath();
-        ctx.arc(ox, oy, coreR + (1 - pulse) * 22, 0, Math.PI * 2);
+        ctx.moveTo(p.x - p.len, p.y);
+        ctx.lineTo(p.x, p.y);
         ctx.stroke();
-      }
+        if (p.text) {
+          ctx.font = "500 12px " + mono();
+          const w = ctx.measureText(p.text).width + 12;
+          const lx = p.x - p.len;
+          ctx.fillStyle = `rgb(${VIOLET})`;
+          ctx.fillRect(lx, p.y - 24, w, 20);
+          ctx.fillStyle = `rgb(${BLACK})`;
+          ctx.textAlign = "left";
+          ctx.fillText(p.text, lx + 6, p.y - 14);
+        }
+      });
+
+      /* refused here */
+      marks.forEach((m) => {
+        ctx.fillStyle = `rgba(${VIOLET},${Math.min(1, m.life / m.max * 1.6)})`;
+        ctx.fillRect(m.x - m.size, m.y - m.size / 2, m.size, m.size);
+      });
+      tags.forEach((t) => {
+        const k = Math.min(1, t.life * 1.4);
+        ctx.font = "600 32px " + disp();
+        ctx.textAlign = "right";
+        ctx.fillStyle = `rgba(${VIOLET},${k})`;
+        ctx.fillText(t.text, t.x - 12, t.y);
+      });
+
     }
 
     function step(now) {
@@ -434,55 +365,40 @@
       const dt = Math.min(.05, (now - last) / 1000);
       last = now;
 
-      px += (tx - px) * .06;
-      py += (ty - py) * .06;
-      core.style.setProperty("--px", px.toFixed(2) + "px");
-      core.style.setProperty("--py", py.toFixed(2) + "px");
-
-      if (now > nextSpawn && now - bornAt > 1100) {
-        const bad = Math.random() < .2;
-        spawn({ bad, stop: bad ? Math.floor(Math.random() * 3) : -1, tag: null });
-        nextSpawn = now + 170 + Math.random() * 300;
+      if (now > nextSpawn) {
+        const bad = Math.random() < .22;
+        spawn({ stop: bad ? Math.floor(Math.random() * GATES.length) : -1 });
+        nextSpawn = now + 36 + Math.random() * 96;
       }
-      if (now > nextLog && now > quietUntil && now - bornAt > 1800) {
+      if (now > nextLog && now > quietUntil) {
         const [l, k] = ambientLines[Math.random() < .72 ? Math.floor(Math.random() * 3) : 3 + Math.floor(Math.random() * 2)];
         addLog(l, k);
         nextLog = now + 1700 + Math.random() * 1500;
       }
 
-      const ox = cx + px, oy = cy + py;
       packets = packets.filter((p) => {
-        const before = p.r;
-        p.r -= p.speed * dt;
-        p.a += p.curl * dt * (p.r / p.r0);
+        const before = p.x;
+        p.x += p.speed * dt;
         for (let i = p.next; i < GATES.length; i++) {
-          const r = gateR(i);
-          if (before > r && p.r <= r) {
+          const x = gateX(i);
+          if (before <= x && p.x > x) {
             p.next = i + 1;
             if (p.stop === i) {
-              const x = ox + Math.cos(p.a) * r, y = oy + Math.sin(p.a) * r;
-              flash(i, p.a, RED, p.size > 1.2 ? 1.1 : .55);
-              burst(x, y, RED, p.size > 1.2 ? 22 : 6);
-              if (p.tag) tags.push({ text: p.tag, x, y: y - 14, life: 1.5, big: true });
+              refuse(i, p.y, p.hot && p.weight > 2.5);
+              if (p.tag) tags.push({ text: p.tag, x, y: p.y, life: 1.5 });
               p.hit?.();
               return false;
             }
-            flash(i, p.a, TEAL, .28);
+            flash(i, p.y, LIME, .22, 6);
           }
         }
-        if (p.r <= coreR) { pulse = 1; return false; }
-        return true;
+        return p.x - p.len <= W;
       });
       flashes = flashes.filter((f) => (f.life -= dt) > 0);
-      sparks = sparks.filter((s) => {
-        s.x += s.vx * dt; s.y += s.vy * dt;
-        s.vx *= .94; s.vy *= .94;
-        return (s.life -= dt) > 0;
-      });
-      tags = tags.filter((t) => { t.y -= 22 * dt; return (t.life -= dt) > 0; });
-      pulse = Math.max(0, pulse - dt * 1.6);
+      marks = marks.filter((m) => (m.life -= dt) > 0);
+      tags = tags.filter((t) => (t.life -= dt) > 0);
 
-      draw(now);
+      draw();
       requestAnimationFrame(step);
     }
 
@@ -494,12 +410,14 @@
     };
     const stop = () => { running = false; };
 
-    bornAt = performance.now();
     resize();
+    /* start with traffic already on the wire, not an empty strip filling up */
+    for (let i = 0; i < Math.round(W / 9); i++) spawn({ x: Math.random() * W });
+    packets.forEach((p) => { p.next = GATES.filter((_, i) => gateX(i) < p.x).length; });
     addEventListener("resize", resize, { passive: true });
-    document.fonts?.ready.then(() => { if (!running) draw(performance.now()); });
-    addLog("200 GET /health  heartbeat ok", "ok");
-    if (reduce) { draw(performance.now()); return; }
+    document.fonts?.ready.then(() => { if (!running) draw(); });
+    [[19, 2], [15, 0], [11, 4], [8, 1], [4, 3], [1, 2]].forEach(([ago, n]) => addLog(ambientLines[n][0], ambientLines[n][1], ago));
+    if (reduce) { draw(); return; }
     new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop()), { threshold: .05 }).observe(stage);
     document.addEventListener("visibilitychange", () => (document.hidden ? stop() : start()));
   })();
@@ -618,6 +536,7 @@
       }
     });
     const paint = (mode) => {
+      $("#ai-lab").dataset.mode = mode;
       list.dataset.mode = mode;
       flip.dataset.mode = mode;
       btns.forEach((b) => b.setAttribute("aria-checked", String(b.dataset.mode === mode)));
@@ -666,7 +585,7 @@
     if (reduce) return;
     els.forEach((el) => {
       const dy = (before.get(el) ?? 0) - el.getBoundingClientRect().top;
-      if (dy) el.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 720, easing: "cubic-bezier(.16,1,.3,1)" });
+      if (dy) el.animate([{ transform: `translateY(${dy}px)` }, { transform: "none" }], { duration: 720, easing: "cubic-bezier(.22,1,.36,1)" });
     });
   };
   const wait = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
@@ -948,7 +867,7 @@
     const add = (el) => {
       const old = [...log.children];
       flipRows(old, () => log.append(el));
-      if (!reduce) el.animate([{ opacity: 0, transform: "translateY(14px) scale(.98)" }, { opacity: 1, transform: "none" }], { duration: 460, easing: "cubic-bezier(.16,1,.3,1)" });
+      if (!reduce) el.animate([{ opacity: 0, transform: "translateY(14px) scale(.98)" }, { opacity: 1, transform: "none" }], { duration: 460, easing: "cubic-bezier(.22,1,.36,1)" });
     };
     const typing = () => {
       const el = document.createElement("div");
@@ -991,15 +910,6 @@
       else if (!visible) run += 1;
     }, { threshold: .25 }).observe($("#chat"));
   })();
-
-  /* ---------- a quiet light follows the pointer across panels ---------- */
-  $$(".spot, .rag, .shopbot").forEach((el) => {
-    el.addEventListener("pointermove", (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      el.style.setProperty("--my", `${e.clientY - r.top}px`);
-    }, { passive: true });
-  });
 
   /* ---------- copy the email address ---------- */
   const copy = $("#copy");
