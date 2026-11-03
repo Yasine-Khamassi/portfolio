@@ -281,7 +281,7 @@
           <ul>
             <li>Autonomous bug-resolution agent: investigates real user reports, reproduces them in a browser, finds the root cause, applies and verifies a fix, and opens a pull request for human approval. Private build.</li>
             <li>Multi-agent coding coordinator: runs up to six Codex and Claude workers in isolated Git worktrees, with independent cross-review, tamper-checked acceptance tests and bounded repair. It completed all six tasks in its live demonstration. Working prototype.</li>
-            <li>ATT&amp;CK Analyst Assistant: a RAG agent that answers SOC questions with cited sources, in English and Arabic, scored on 116 test questions in CI.</li>
+            <li>ATT&amp;CK Analyst Assistant: a RAG agent that answers SOC questions with cited sources, in English and Arabic, scored on a 116-question evaluation set in CI.</li>
             <li>A multi-tenant AI sales and support platform for Gulf e-commerce: Arabic-first, with catalogue search, order lookup and escalation to human agents. Pre-launch.</li>
             <li>A shared, versioned RAG core behind the last two, with strict tool schemas and tenant isolation through PostgreSQL Row-Level Security.</li>
             <li>Model training on Hugging Face datasets, alongside building with Claude, Codex, Cursor and local models.</li>
@@ -384,8 +384,8 @@
         <div class="evalc" data-r="up">
           <dl class="rag-metrics">
             <div><dd>6/6</dd><dt>tasks completed in the live six-worker demo</dt></div>
-            <div><dd>28</dd><dt>check runs recorded, including failures</dt></div>
-            <div><dd>63/63</dd><dt>tests passing</dt></div>
+            <div><dd>28</dd><dt>check runs recorded, including the failing baseline</dt></div>
+            <div><dd>63/63</dd><dt>regression tests passing</dt></div>
           </dl>
           <ul class="safe">
             <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>A worker saying its tests passed counts for nothing. They have to pass in a real process.</li>
@@ -402,7 +402,7 @@
       <div class="rag-top">
         <div>
           <h3><a href="https://github.com/Yasine-Khamassi/attack-rag">ATT&amp;CK Analyst Assistant <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
-          <p>SOC analysts can't act on an answer they can't check. This agent searches MITRE ATT&amp;CK by meaning and by exact words, calls a tool when the sources fall short, cites every sentence and refuses when it doesn't know, in English and Arabic.</p>
+          <p>SOC analysts can't act on an answer they can't check. This agent runs hybrid search over MITRE ATT&amp;CK, calls a tool when the sources fall short, cites every sentence and refuses when it doesn't know, in English and Arabic.</p>
           <p class="state ok">Working system, public code.</p>
         </div>
         <ul class="stack">
@@ -421,8 +421,8 @@
           </div>
           <ol class="trace-steps" id="tracesteps">
             <li><span>Translate Arabic for search</span></li>
-            <li><span>Search by meaning and exact words</span></li>
-            <li><span>Claude re-orders the top 15</span></li>
+            <li><span>Hybrid search: vector + keyword</span></li>
+            <li><span>Claude re-ranks the top 15</span></li>
             <li><span>Answer, cited sentence by sentence</span></li>
           </ol>
           <ol class="trace-list" id="tracelist" aria-label="Retrieved ATT&amp;CK techniques"></ol>
@@ -431,20 +431,20 @@
         </div>
 
         <figure class="evalc" data-r="up">
-          <figcaption><b>How well search finds the right source</b> Score out of 100 on 116 test questions: 49 in English, 49 in Arabic and 18 in Arabic with an ATT&amp;CK ID</figcaption>
+          <figcaption><b>Retrieval quality, measured</b> Ranking score out of 100 on a 116-question evaluation set: 49 English, 49 Arabic, 18 Arabic with an ATT&amp;CK ID</figcaption>
           <ul class="bars" id="bars">
-            <li><span class="bar-l">Searching by meaning alone</span><span class="bar"><i class="v482"></i></span><span class="bar-v" data-count-to="48">48</span></li>
-            <li><span class="bar-l">Searching by exact words alone</span><span class="bar"><i class="v595"></i></span><span class="bar-v" data-count-to="60">60</span></li>
-            <li><span class="bar-l">Both together, plus exact ID matches</span><span class="bar"><i class="v686"></i></span><span class="bar-v" data-count-to="69">69</span></li>
-            <li class="best"><span class="bar-l">Plus Claude translating and re-ordering results</span><span class="bar"><i class="v766"></i></span><span class="bar-v" data-count-to="77">77</span></li>
+            <li><span class="bar-l">Vector search</span><span class="bar"><i class="v482"></i></span><span class="bar-v" data-count-to="48">48</span></li>
+            <li><span class="bar-l">Keyword search</span><span class="bar"><i class="v595"></i></span><span class="bar-v" data-count-to="60">60</span></li>
+            <li><span class="bar-l">Hybrid search with exact-ID pinning</span><span class="bar"><i class="v686"></i></span><span class="bar-v" data-count-to="69">69</span></li>
+            <li class="best"><span class="bar-l">Hybrid + Claude translation and re-ranking</span><span class="bar"><i class="v766"></i></span><span class="bar-v" data-count-to="77">77</span></li>
           </ul>
           <dl class="rag-metrics">
-            <div><dd>95%</dd><dt>of questions had the right source in the top 5 results</dt></div>
-            <div><dd>96/100</dd><dt>for sticking to its sources</dt></div>
+            <div><dd>95%</dd><dt>retrieved the right source in the top 5</dt></div>
+            <div><dd>96/100</dd><dt>faithfulness to sources</dt></div>
             <div><dd>100%</dd><dt>of answers fully cited</dt></div>
-            <div><dd>12/12</dd><dt>questions with no answer were refused</dt></div>
+            <div><dd>12/12</dd><dt>unanswerable questions refused</dt></div>
             <div><dd>~$0.001</dd><dt>per question</dt></div>
-            <div><dd>74 and 75</dd><dt>search score in Arabic and in English</dt></div>
+            <div><dd>74 / 75</dd><dt>ranking score, Arabic / English</dt></div>
           </dl>
         </figure>
       </div>
@@ -475,11 +475,11 @@
 
       <ul class="practice">
         <li data-r="up"><svg class="ic" aria-hidden="true"><use href="#i-workflow"/></svg><div><h3>Orchestration and tools</h3><p>Multi-step runs with task dependencies, strict tool schemas and per-tenant allowlists. The tenant is injected by code, never by the model.</p></div></li>
-        <li data-r="up"><svg class="ic" aria-hidden="true"><use href="#i-flask-conical"/></svg><div><h3>Verification</h3><p>Agents don't grade themselves. Test questions, trusted checks and real test runs decide, and the build fails when results drop.</p></div></li>
+        <li data-r="up"><svg class="ic" aria-hidden="true"><use href="#i-flask-conical"/></svg><div><h3>Verification</h3><p>Agents don't grade themselves. Evaluation sets, trusted checks and real test runs decide, and CI fails when results drop.</p></div></li>
         <li data-r="up"><svg class="ic" aria-hidden="true"><use href="#i-user-round-check"/></svg><div><h3>Human approval and limits</h3><p>Deny by default. High-impact tools wait for a person, code ships through pull requests, and a gateway outside the model enforces the limits.</p></div></li>
         <li data-r="up"><svg class="ic" aria-hidden="true"><use href="#i-file-search"/></svg><div><h3>Observability and audit</h3><p>Every tool call is logged and attributable, runs keep checksummed evidence, and audit trails can be HMAC-chained so tampering shows.</p></div></li>
         <li data-r="up"><svg class="logo" aria-hidden="true"><use href="#b-huggingface"/></svg><div><h3>Models and providers</h3><p>I train models on Hugging Face datasets, and I build across Claude, Codex, Cursor and local models through Ollama, so a system isn't tied to one vendor's API.</p></div></li>
-        <li data-r="up"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><div><h3>Retrieval and state</h3><p>Answers come from searching real sources, and the agent keeps track of the chat so follow-up questions make sense.</p></div></li>
+        <li data-r="up"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><div><h3>Retrieval and state</h3><p>Hybrid search and re-ranking ground every answer in real sources, and conversation state keeps follow-up questions on track.</p></div></li>
       </ul>
     </div>
   </div>
@@ -636,7 +636,7 @@
   <div class="wrap lab-head">
     <div>
       <h2 id="lab-title" class="h2 split">AI security lab: attack, defend, verify</h2>
-      <p class="lab-lede" data-r="up">I attack language-model applications I run myself, score the result against the known right answer, then retest with the controls on. Fake secrets only, and every result is in the repo. Flip it and watch the numbers.</p>
+      <p class="lab-lede" data-r="up">I attack language-model applications I run myself, score the result against ground truth, then retest with the controls on. Fake secrets only, and every result is in the repo. Flip it and watch the numbers.</p>
     </div>
     <div class="flip" id="flip" role="radiogroup" aria-label="Show results for">
       <span class="flip-ind" aria-hidden="true"></span>
@@ -650,7 +650,7 @@
       <li class="run" data-total="10" data-a="1" data-d="0">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/llm-red-team-lab">LLM Red-Team Lab <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
-          <p>Attack a local support chatbot with prompt-injection probes and score leaks with a simple test: a planted fake API key either shows up in the reply or it doesn't.</p>
+          <p>Attack a local support chatbot with prompt-injection probes and score leaks by ground truth: a planted fake API key either shows up in the reply or it doesn't.</p>
         </div>
         <div class="run-result">
           <div class="dots" aria-hidden="true"></div>
@@ -680,7 +680,7 @@
       <li class="run" data-total="18" data-a="4" data-d="1">
         <div class="run-main">
           <h3><a href="https://github.com/Yasine-Khamassi/attack-rag">ATT&amp;CK Analyst Assistant <svg class="ic" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></a></h3>
-          <p>Answers SOC questions from MITRE ATT&amp;CK with cited sources, in English and Arabic. Better search raised its score from 48 to 77 out of 100, each customer's data is kept apart by Row-Level Security, and attack success falls from 22% to 6% with guards on.</p>
+          <p>Hybrid-search RAG over MITRE ATT&amp;CK that answers SOC questions with cited sources, in English and Arabic. Hybrid search and re-ranking lift retrieval quality from 48 to 77 out of 100, tenants are isolated by Row-Level Security, and attack success falls from 22% to 6% with guards on.</p>
         </div>
         <div class="run-result">
           <div class="dots" aria-hidden="true"></div>
@@ -759,7 +759,7 @@
         <li class="tile" data-r="pop"><svg class="ic" aria-hidden="true"><use href="#i-scan-eye"/></svg>Browser automation for agents</li>
         <li class="tile" data-r="pop"><svg class="logo" aria-hidden="true"><use href="#b-modelcontextprotocol"/></svg>Model Context Protocol</li>
         <li class="tile" data-r="pop"><svg class="ic" aria-hidden="true"><use href="#i-user-round-check"/></svg>Human-in-the-loop controls</li>
-        <li class="tile" data-r="pop"><svg class="ic" aria-hidden="true"><use href="#i-flask-conical"/></svg>AI evaluation and testing</li>
+        <li class="tile" data-r="pop"><svg class="ic" aria-hidden="true"><use href="#i-flask-conical"/></svg>LLM evaluation and regression testing</li>
         <li class="tile" data-r="pop"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>RAG, hybrid search, reranking</li>
         <li class="tile c-pg" data-r="pop"><svg class="logo" aria-hidden="true"><use href="#b-postgresql"/></svg>pgvector and embeddings</li>
         <li class="tile c-hf" data-r="pop"><svg class="logo" aria-hidden="true"><use href="#b-huggingface"/></svg>Hugging Face datasets and training</li>
